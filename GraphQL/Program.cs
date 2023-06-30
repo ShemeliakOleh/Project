@@ -7,6 +7,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+builder.services.AddDbContext<MyDbContext>();
+builder.services
+    .AddGraphQLServer()
+    .AddQueryType<Query>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -16,10 +23,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
+app.UseRouting()
+   .UseEndpoints(endpoints =>
+   {
+       endpoints.MapGraphQL();
+   });
