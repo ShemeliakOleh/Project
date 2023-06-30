@@ -17,7 +17,14 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        return View(await _context.ScrappedElements.ToListAsync());
+        var userId = HttpContext.Session.GetInt32("UserId");
+        if (userId == null)
+        {
+            // User is not logged in, redirect to login page
+            return RedirectToAction("login", "user");
+        }
+
+        return View(await _context.scrappedElements.ToListAsync());
     }
 
     public IActionResult Privacy()
