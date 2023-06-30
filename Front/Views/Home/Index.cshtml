@@ -1,0 +1,19 @@
+﻿@model IEnumerable<ScrappedElement>
+
+<h2>List of Scrapped Elements</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Title)</td>
+            </tr>
+        }
+    </tbody>
+</table>
