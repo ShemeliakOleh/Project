@@ -1,0 +1,27 @@
+@startuml
+
+skinparam actorStyle awesome
+
+:User: as User
+
+cloud "DOU" as Website
+
+[Selenuim] as Selenuim
+queue "Cache (Redis)" as Cache
+queue "Queue (Rabbit MQ)" as Queue
+[Consumer (.NET)] as Consumer
+database "DB (SQLite)" as DB
+[Front End (Asp.NET MVC)] as FrontEnd
+
+
+User --> FrontEnd: User launches the app
+FrontEnd --> DB: App requests data
+Consumer --> DB: Consumer puts data in DB
+Queue --> Consumer: Consumer gets data from Queue
+Producer --> Queue: Producer puts data in Queue
+Cache --> Producer: New data except cache data uses in Producer
+Selenuim --> Cache: Selenuim puts data in Cache
+
+WebSite --> Selenuim: Selenuim scrapes data
+
+@enduml
