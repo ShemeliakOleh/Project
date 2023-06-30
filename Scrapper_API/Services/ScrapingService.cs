@@ -14,11 +14,6 @@ public class ScrapingService : IScrapingService
 
         driver.Url = @"https://jobs.dou.ua/vacancies/?category=.NET";
 
-
-
-
-
-
         IWebElement moreBtn = null;
         var IsMoreBtn = true;
 

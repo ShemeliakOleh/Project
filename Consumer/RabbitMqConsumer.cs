@@ -1,14 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using Consumer.Models;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Consumer;
-public class RabbitMqConsumer<T>
+public class RabbitMqConsumer
 {
     private readonly IConnectionFactory _connectionFactory;
     private IConnection _connection;
@@ -26,14 +23,14 @@ public class RabbitMqConsumer<T>
                              arguments: null);
     }
 
-    public void ConsumeQueue(Action<T> messageHandler)
+    public void ConsumeQueue(Action<ScrappedElement> messageHandler)
     {
         var consumer = new EventingBasicConsumer(_channel);
         consumer.Received += (model, ea) =>
         {
             var body = ea.Body.ToArray();
             var message = Encoding.UTF8.GetString(body);
-            var deserializedMessage = JsonConvert.DeserializeObject<T>(message);
+            var deserializedMessage = new ScrappedElement() { Title = JsonConvert.DeserializeObject<string>(message)} ;
             messageHandler(deserializedMessage);
         };
         _channel.BasicConsume(queue: "ScrapingResultsQueue",

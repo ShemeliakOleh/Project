@@ -1,4 +1,7 @@
 ﻿using Consumer;
+using Consumer.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Xml;
 
 var factory = new RabbitMQ.Client.ConnectionFactory()
 {
@@ -9,8 +12,18 @@ var factory = new RabbitMQ.Client.ConnectionFactory()
     //...
 };
 
-var consumer = new RabbitMqConsumer<string>(factory);
+var consumer = new RabbitMqConsumer(factory);
 
-consumer.ConsumeQueue(x=>Console.WriteLine(x));
+consumer.ConsumeQueue(entity =>
+{
+    using (var db = new ApplicationDBContext())
+    {
+        db.scrappedElements.Add(entity);
+        db.SaveChangesAsync();
+    }
+});
 
-Console.ReadKey();
+while (true)
+{
+    Thread.Sleep(5000);
+}
