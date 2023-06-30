@@ -9,8 +9,10 @@ public class ScrapingService : IScrapingService
     public async Task<IEnumerable<string>> ScrapSite()
     {
         var sites = new List<string>();
+        var chromeOptions = new ChromeOptions();
+        chromeOptions.AddArguments("headless");
 
-        IWebDriver driver = new ChromeDriver();
+        IWebDriver driver = new ChromeDriver(chromeOptions);
 
         driver.Url = @"https://jobs.dou.ua/vacancies/?category=.NET";
 
