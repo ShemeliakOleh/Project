@@ -13,7 +13,6 @@ queue "Queue (Rabbit MQ)" as Queue
 database "DB (SQLite)" as DB
 [Front End (Asp.NET MVC)] as FrontEnd
 
-
 User --> FrontEnd: User launches the app
 FrontEnd --> DB: App requests data
 Consumer --> DB: Consumer puts data in DB
